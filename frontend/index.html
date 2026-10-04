@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منوی دیجیتال هوشمند</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#fef7ee',
+                            100: '#fdedd6',
+                            200: '#fad7ad',
+                            300: '#f6ba79',
+                            400: '#f19340',
+                            500: '#ed7716',
+                            600: '#e05e0d',
+                            700: '#be440d',
+                            800: '#953512',
+                            900: '#782c11',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { font-family: 'Vazirmatn', sans-serif; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div id="app">
+        <!-- QR Landing Page -->
+        <div id="qr-page" class="min-h-screen flex flex-col">
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+                    <h1 class="text-xl font-bold text-gray-800">منوی دیجیتال</h1>
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm text-gray-500" id="restaurant-name">رستوران تست</span>
+                    </div>
+                </div>
+            </header>
+            
+            <main class="flex-1 p-4 max-w-4xl mx-auto w-full">
+                <div id="qr-content" class="text-center py-12">
+                    <div class="inline-flex items-center justify-center w-32 h-32 rounded-full bg-primary-100 mb-6">
+                        <svg class="w-16 h-16 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2" id="welcome-title">خوش آمدید!</h2>
+                    <p class="text-gray-600 mb-8 max-w-md mx-auto" id="welcome-desc">QR کد را اسکن کنید تا منوی رستوران را ببینید</p>
+                    
+                    <div class="max-w-md mx-auto space-y-4">
+                        <button id="enter-menu-btn" class="w-full py-4 px-6 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors shadow-lg">
+                            ورود به منو
+                        </button>
+                        <button id="scan-qr-btn" class="w-full py-3 px-6 border-2 border-primary-500 text-primary-600 font-medium rounded-xl hover:bg-primary-50 transition-colors">
+                            اسکن مجدد QR
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Menu Page -->
+        <div id="menu-page" class="hidden min-h-screen flex flex-col">
+            <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+                <div class="max-w-4xl mx-auto px-4">
+                    <div class="flex items-center justify-between h-16">
+                        <div class="flex items-center gap-3">
+                            <button id="back-btn" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <div>
+                                <h1 class="font-bold text-gray-800" id="menu-restaurant-name">رستوران تست</h1>
+                                <p class="text-xs text-gray-500" id="menu-branch-name">شعبه اصلی</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="search-toggle" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </button>
+                            <!-- Cart Button -->
+                            <button id="cart-btn" class="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-14z"></path>
+                                </svg>
+                                <span id="cart-badge" class="absolute -top-1 -left-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center hidden">0</span>
+                            </button>
+                            <span class="hidden sm:block text-sm text-gray-500 bg-primary-50 px-3 py-1 rounded-full" id="table-indicator">میز ۱</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div id="search-bar" class="hidden px-4 pb-4">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="جستجو در منو..." class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none">
+                        <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto pb-4">
+                <div class="max-w-4xl mx-auto px-4">
+                    <!-- Filter Chips -->
+                    <div class="flex gap-2 overflow-x-auto pb-4 px-1" id="filter-chips">
+                        <button class="filter-chip active px-4 py-2 bg-primary-500 text-white rounded-full text-sm font-medium whitespace-nowrap" data-filter="all">همه</button>
+                        <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap" data-filter="popular">محبوب</button>
+                        <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap" data-filter="new">جدید</button>
+                        <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap" data-filter="available">موجود</button>
+                    </div>
+
+                    <!-- Categories Tabs -->
+                    <div class="border-b border-gray-200 mb-4">
+                        <nav class="flex gap-1 overflow-x-auto pb-2 px-1" id="category-tabs" role="tablist">
+                            <!-- Categories will be inserted here -->
+                        </nav>
+                    </div>
+
+                    <!-- Items Grid -->
+                    <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Items will be inserted here -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="empty-state" class="hidden text-center py-12">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                        <p class="text-gray-500" id="empty-message">هیچ موردی یافت نشد</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Item Detail Modal -->
+        <div id="item-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4">
+                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" id="modal-backdrop"></div>
+                <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden">
+                    <div class="relative h-56 bg-gray-100">
+                        <img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+                        <button id="close-modal" class="absolute top-3 left-3 p-2 bg-white/90 rounded-full shadow-lg hover:bg-white transition-colors">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        <div class="absolute bottom-3 right-3 flex gap-2" id="modal-badges"></div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-2" id="modal-name">نام غذا</h2>
+                        <p class="text-gray-600 mb-4 line-clamp-3" id="modal-description">توضیحات غذا</p>
+                        
+                        <div class="flex items-center gap-4 mb-4" id="modal-price">
+                            <span class="text-2xl font-bold text-primary-600" id="modal-price-toman">۵۰,۰۰۰ تومان</span>
+                            <span class="text-lg text-gray-500 line-through" id="modal-price-rial">۵۰۰,۰۰۰ ریال</span>
+                        </div>
+
+                        <div class="mb-4" id="modal-allergens"></div>
+
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-800 mb-3">گزینه‌ها و شخصی‌سازی</h3>
+                            <div id="modal-options" class="space-y-3"></div>
+                        </div>
+
+                        <button id="add-to-cart-btn" class="w-full py-3 px-6 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors shadow-lg">
+                            افزودن به سبد
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results Modal -->
+        <div id="search-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex min-h-full items-start justify-center pt-20 px-4 pb-4">
+                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" id="search-modal-backdrop"></div>
+                <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[80vh] overflow-hidden">
+                    <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-gray-800">نتایج جستجو</h2>
+                        <button id="close-search-modal" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-4 max-h-[60vh] overflow-y-auto" id="search-results">
+                        <!-- Search results will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Modal -->
+        <div id="cart-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center px-4 pb-4">
+                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" id="cart-modal-backdrop"></div>
+                <div class="relative bg-white rounded-t-2xl shadow-xl max-w-md w-full max-h-[85vh] overflow-hidden flex flex-col">
+                    <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-gray-800">سبد خرید</h2>
+                        <button id="close-cart-modal" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-4" id="cart-items">
+                        <!-- Cart items will be inserted here -->
+                    </div>
+                    <div class="p-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-gray-600">مبلغ قابل پرداخت</span>
+                            <span id="cart-subtotal" class="text-2xl font-bold text-primary-600">۰ تومان</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="clear-cart-btn" class="flex-1 py-3 px-4 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">
+                                خالی کردن سبد
+                            </button>
+                            <button id="checkout-btn" class="flex-1 py-3 px-6 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors shadow-lg">
+                                ثبت سفارش
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div class="bg-white rounded-2xl p-8 text-center shadow-xl">
+                <div class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p class="text-gray-600" id="loading-text">در حال بارگذاری...</p>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toast-container" class="fixed bottom-4 left-4 z-50 flex flex-col gap-2"></div>
+    </div>
+
+    <script src="/src/app.js"></script>
+</body>
+</html>
